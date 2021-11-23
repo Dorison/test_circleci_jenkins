@@ -1,0 +1,24 @@
+kind: pipeline
+type: docker
+name: lesson3alfa
+
+steps:
+- name: Build
+  image: plugins/docker
+  settings:
+    repo: mdsn/drone-ci-demo
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+
+- name: Run
+  image: appleboy/drone-ssh
+  settings:
+    host: 18.195.29.73
+    username: ubuntu
+    key:
+      from_secret: ssh_key
+    port: 22
+    script:
+      - docker run --name firstcode --rm -d -p8080:8080 mdsn/drone-ci-demo

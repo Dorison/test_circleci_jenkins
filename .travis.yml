@@ -1,0 +1,13 @@
+dist: xenial
+
+jobs:
+  include:
+    - stage: Show Export
+      script:
+      - export
+    
+    - stage: build and push docker image
+      script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker build -t $DOCKER_USERNAME/travis-ci-build-stages-demo:0.0.$TRAVIS_BUILD_NUMBER .
+      - docker push $DOCKER_USERNAME/travis-ci-build-stages-demo:0.0.$TRAVIS_BUILD_NUMBER
